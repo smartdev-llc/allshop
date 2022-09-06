@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ALLShop</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/site.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top" ng-app="AppModule">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" ng-controller="AppController">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" ng-init="getMenu()">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                <div class="sidebar-brand-text mx-3">AllShop</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link text-white font-weight-bold" href="#" ng-click="getItemByCategoryId(0)">
+                    <span>All</span>
+                </a>
+            </li>
+            <li class="nav-item" ng-repeat="menu in menuList">
+                <a href="#" class="nav-link text-white font-weight-bold" ng-click="getItemByCategoryId(menu.id)">
+                    <span>{{menu.name}}</span>
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="#page-top"></div>
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-shopping-cart fa-fw"></i>
+                                <!-- Counter - Messages -->
+                                <span class="badge badge-danger badge-counter" ng-show="shoppingCart.length>0">{{shoppingCart.length}}</span>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="messagesDropdown">
+                                <h6 class="dropdown-header">
+                                    Your basket
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#" ng-repeat="cartItem in shoppingCart | limitTo : 3">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/{{cartItem.img}}"
+                                             alt="...">
+                                        <!--<div class="status-indicator bg-success"></div>-->
+                                    </div>
+                                    <div class="font-weight-bold">
+                                        <div class="text-truncate">
+                                            {{cartItem.itemName}}
+                                        </div>
+                                        <div class="small text-gray-800">
+                                            {{cartItem.orderQty}} x {{cartItem.newPrice | currency:'£ '}} = {{cartItem.amount | currency:'£ '}}
+                                        </div>
+                                    </div>
+                                </a>
+                                <a ng-click="showCart()" class="dropdown-item text-center small text-gray-800" href="#">View Detials</a>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <img class="img-profile rounded-circle"
+                                     src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid text-dark" ng-init="getAllData()">
+
+                    <!-- Page Heading -->
+                    <!--<h1 class="h3 mb-4">Blank Page{{' Hello'}}</h1>-->
+                    <div class="row">
+                        <div class="col-md-3 mb-3" ng-repeat="item in itemList">
+                            <div class="card">
+                                <div class="card-header">
+                                    <img alt="{{item.itemName}}" class="img-product" src="img/{{item.img}}" />
+                                </div>
+                                <div class="card-body">
+                                    <a href="#" ng-click="getItemById(item.id)">
+                                        <p class="item-Title text-primary font-weight-bold">
+                                            {{item.itemName}}
+                                            <span ng-show="item.currenctStock<=0" class="no-underline badge badge-danger font-weight-bold text-white">&nbsp;Out of stock</span>
+                                        </p>
+                                    </a>
+                                    <div class="row">
+                                        <div class="text-white col-md-5 bg-primary font-weight-bold text-center align-items-center">
+                                            {{item.newPrice | currency:'£ '}}
+                                        </div>
+                                        <div ng-show="item.newPrice<item.oldPrice" class="col-md-5 bg-light text-gray-600 font-weight-bold text-center align-items-center" ">
+                                            <del>{{item.oldPrice | currency:'£ '}}</del>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button ng-disabled="item.currenctStock<=0" ng-click="addToCart(item,1)" class="btn btn-sm btn-success bg-gradient-success"><i class="fa fa-cart-plus"></i>&nbsp; add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; ALLSHOP 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+        <!-- Product Details Modal -->
+        <div class="modal fade" id="ItemDetialsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary font-weight-bold" id="">Product Details</h5>
+                        <button title="Clos" type="button" ng-click="hideItemDetialsModal()" class="btn btn-outline-danger text-black-50 btn-circle btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <img alt="{{item.itemName}}" class="img-product" src="img/{{item.img}}" />
+                            </div>
+                            <div class="card-body details-Card-Body">
+                                <p class="text-primary font-weight-bold">Item: {{item.itemName}}</p>
+                                <p class="text-primary font-weight-bold">Category: {{item.catName}}</p>
+                                <p class="text-primary font-weight-bold">Available Stock: {{item.currenctStock}}</p>
+
+                                <span class="p-2 mr-2 text-white bg-primary font-weight-bold text-center">
+                                    {{item.newPrice | currency:'£ '}}
+                                </span>
+                                <span ng-show="item.newPrice<item.oldPrice" class="p-2 mr-2 bg-light text-gray-600 font-weight-bold text-center">
+                                    <del>{{item.oldPrice | currency:'£ '}}</del>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span ng-disabled="item.currenctStock<=0" ng-click="decreaseQty()" class="input-group-text input-group-text-sm text-dark">
+                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <input ng-disabled="item.currenctStock<=0" ng-model="orderQty" ng-change="validateInput()" type="text" class="text-dark font-weight-bold form-control form-control-sm text-center">
+                            <div class="input-group-append">
+                                <span ng-disabled="item.currenctStock<=0" ng-click="increaseQty(item)" class="input-group-text text-dark">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <button ng-disabled="item.currenctStock<=0" ng-click="updateCart(item,orderQty)" class="btn btn-sm btn-success bg-gradient-success"><i class="fa fa-cart-plus"></i>&nbsp; Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Product Details Modal -->
+        <!-- Shopping Cart Modal -->
+        <div class="modal fade" id="ShoppingCart" data-backdrop="false" data-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary font-weight-bold" id="">Your Cart Details</h5>
+                        <button title="Clos" type="button" ng-click="hideModal('ShoppingCart')" class="btn btn-outline-danger text-black-50 btn-circle btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-dark font-weight-bold text-center align-middle">Sl</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle" style="width: 35%;">Product</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle" style="width: 20%;">Quantity</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle" style="width: 12%;">Price</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle" style="width: 20%;">Amount</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle" style="width: 10%;">Available</th>
+                                    <th class="text-dark font-weight-bold text-center align-middle"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="font">
+                                <tr ng-repeat="cItem in shoppingCart">
+                                    <td class="text-dark font-weight-bold text-center align-middle">{{$index+1}}</td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">{{cItem.itemName}}</td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">
+                                        <div class="input-group w-100">
+                                            <div class="input-group-prepend">
+                                                <span ng-disabled="cItem.currenctStock<=0" ng-click="addToCart(cItem,-1,true)" class="input-group-text input-group-text-sm text-dark">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                            <input ng-disabled="cItem.currenctStock<=0" ng-model="cItem.orderQty" ng-change="validateInput()" type="text" class="text-dark font-weight-bold form-control form-control-sm text-center">
+                                            <div class="input-group-append">
+                                                <span ng-disabled="cItem.currenctStock<=0" ng-click="addToCart(cItem,1,true)" class="input-group-text text-dark">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">{{cItem.newPrice | currency:'£ '}}</td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">{{cItem.amount | currency:'£ '}}</td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">{{cItem.currenctStock}}</td>
+                                    <td class="text-dark font-weight-bold text-center align-middle">
+                                        <button ng-click="removeItem(cItem)" title="Remove Item" class="btn btn-sm btn-circle btn-danger bg-gradient-danger">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row text-dark font-weight-bold">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">Total Discount</div>
+                                    <div class="col-md-6">{{totalDiscount | currency:'£ '}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">Promo Apply Here</div>
+                                    <div class="col-md-7">
+                                        <div class="input-group w-100">
+                                            <input ng-model="promoCode" type="text" class="text-dark font-weight-bold form-control form-control-sm text-center">
+                                            <div class="input-group-append">
+                                                <button ng-click="applyPromo()" class="input-group-text text-dark">
+                                                    Apply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">Sub Total</div>
+                                    <div class="col-md-4">{{subTotal | currency:'£ '}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">Grand Total</div>
+                                    <div class="col-md-4">{{grandTotal | currency:'£ '}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="checkOut()" class="btn btn-sm btn-success bg-gradient-success">Check Out</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Shopping Cart Modal -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="js/sb-admin-2.min.js"></script>
+        <!-- Sweetalert plugin JavaScript-->
+        <script src="js/sweetalert.min.js"></script>
+
+        <!-- Freamworkd: Angular Js-->
+        <script src="js/angular.min.js"></script>
+        <!--Custome JS-->
+        <script src="js/app.js"></script>
+</body>
+
+</html>

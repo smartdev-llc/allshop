@@ -1,0 +1,28 @@
+.text-dark{
+  color: black !important;
+}
+.text-white {
+    color: white !important;
+}
+.img-product {
+    width: 100% !important;
+    height: 213px !important;
+}
+.item-Title {
+    height: 48px !important;
+}
+p{
+    margin-bottom: .5rem !important;
+}
+.details-Card-Body{
+    padding-top:.4rem !important;
+}
+.input-group-text{
+    height: 31px;
+}
+.input-group {
+    width: 30%;
+}
+.no-underline{
+   text-decoration: none;
+}
